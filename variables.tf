@@ -5,7 +5,36 @@ locals {
         PREPROD = "preprod"
         PROD = "prod"
     }
-    
+    resource_prefix = {
+        DEV ="monolithic"
+        BUGFIXING = "monolithic"
+        PREPROD = "monolithic"
+        PROD = "monolithic"
+    }
+    frontend_subnets_count = {
+        DEV = "1"
+        BUGFIXING = "2"
+        PREPROD = "2"
+        PROD = "2"
+    }
+    backend_subnets_count = {
+        DEV = "1"
+        BUGFIXING = "2"
+        PREPROD = "2"
+        PROD = "2"
+    }
+    frontend_instance_count = {
+        DEV = "1"
+        BUGFIXING = "2"
+        PREPROD = "2"
+        PROD = "2"
+    }
+    backend_instance_count = {
+        DEV = "1"
+        BUGFIXING = "2"
+        PREPROD = "2"
+        PROD = "2"
+    }
     azs  = {
         DEV = ["eu-central-1a", "eu-central-1b", "eu-central-1c"]
         BUGFIXING = ["eu-central-1a", "eu-central-1b", "eu-central-1c"]

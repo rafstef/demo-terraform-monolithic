@@ -29,37 +29,49 @@ resource "aws_vpc" "main" {
   cidr_block       = "${lookup(local.cidr, terraform.workspace)}"
 
   tags = {
-    Name = "demo-monolithic-${lookup(local.env, terraform.workspace)}"
+    Name = "${lookup(local.resource_prefix, terraform.workspace)}-demo-${lookup(local.env, terraform.workspace)}"
   }
 }
 
 resource "aws_subnet" "private" {
-  count = 3
+  count = "${lookup(local.backend_subnets_count, terraform.workspace)}"
   vpc_id     = aws_vpc.main.id
   cidr_block = element("${lookup(local.private_subnets, terraform.workspace)}",count.index)
   availability_zone = element("${lookup(local.azs, terraform.workspace)}",count.index)
 
   tags = {
-    Name = "private-${count.index}"
+    Name = "${lookup(local.resource_prefix, terraform.workspace)}-demo-private-${count.index}"
   }
 }
 
 resource "aws_subnet" "public" {
-  count = 3
+  count = "${lookup(local.frontend_subnets_count, terraform.workspace)}"
   vpc_id     = aws_vpc.main.id
   cidr_block = element("${lookup(local.public_subnets, terraform.workspace)}",count.index)
   availability_zone = element("${lookup(local.azs, terraform.workspace)}",count.index)
   tags = {
-    Name = "public-${count.index}"
+    Name = "${lookup(local.resource_prefix, terraform.workspace)}-demo-public-${count.index}"
   }
 }
 
 
-# resource "aws_instance" "test-frontend" {
-#   ami           = data.aws_ami.ubuntu.id
-#   instance_type = "t3.micro"
+resource "aws_instance" "frontend" {
+  count = "${lookup(local.frontend_instance_count, terraform.workspace)}"
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
+  subnet_id = aws_subnet.public[count.index]
 
-#   tags = {
-#     Name = "demo-monolithic-frontend"
-#   }
-# }
+  tags = {
+    Name = "${lookup(local.resource_prefix, terraform.workspace)}-demo-frontend-${count.index}"
+  }
+}
+resource "aws_instance" "backend" {
+  count = "${lookup(local.backend_instance_count, terraform.workspace)}"
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
+  subnet_id = aws_subnet.public[count.index]
+
+  tags = {
+    Name = "${lookup(local.resource_prefix, terraform.workspace)}-demo-backend-${count.index}"
+  }
+}
