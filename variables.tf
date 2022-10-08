@@ -12,24 +12,24 @@ locals {
         PROD = "monolithic"
     }
     frontend_subnets_count = {
-        DEV = "1"
+        DEV = "2"
         BUGFIXING = "2"
         PREPROD = "2"
         PROD = "2"
     }
     backend_subnets_count = {
-        DEV = "1"
-        BUGFIXING = "2"
-        PREPROD = "2"
-        PROD = "2"
-    }
-    frontend_instance_count = {
-        DEV = "1"
+        DEV = "2"
         BUGFIXING = "2"
         PREPROD = "2"
         PROD = "2"
     }
     backend_instance_count = {
+        DEV = "2"
+        BUGFIXING = "2"
+        PREPROD = "2"
+        PROD = "2"
+    }
+    frontend_instance_count = {
         DEV = "1"
         BUGFIXING = "2"
         PREPROD = "2"
