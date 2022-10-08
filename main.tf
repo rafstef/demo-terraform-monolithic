@@ -55,23 +55,23 @@ resource "aws_subnet" "public" {
 }
 
 
-resource "aws_instance" "frontend" {
-  count = "${lookup(local.frontend_instance_count, terraform.workspace)}"
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
-  subnet_id = aws_subnet.public[count.index]
+# resource "aws_instance" "frontend" {
+#   count = "${lookup(local.frontend_instance_count, terraform.workspace)}"
+#   ami           = data.aws_ami.ubuntu.id
+#   instance_type = "t3.micro"
+#   subnet_id = aws_subnet.public[count.index]
 
-  tags = {
-    Name = "${lookup(local.resource_prefix, terraform.workspace)}-demo-frontend-${count.index}"
-  }
-}
-resource "aws_instance" "backend" {
-  count = "${lookup(local.backend_instance_count, terraform.workspace)}"
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
-  subnet_id = aws_subnet.public[count.index]
+#   tags = {
+#     Name = "${lookup(local.resource_prefix, terraform.workspace)}-demo-frontend-${count.index}"
+#   }
+# }
+# resource "aws_instance" "backend" {
+#   count = "${lookup(local.backend_instance_count, terraform.workspace)}"
+#   ami           = data.aws_ami.ubuntu.id
+#   instance_type = "t3.micro"
+#   subnet_id = aws_subnet.public[count.index]
 
-  tags = {
-    Name = "${lookup(local.resource_prefix, terraform.workspace)}-demo-backend-${count.index}"
-  }
-}
+#   tags = {
+#     Name = "${lookup(local.resource_prefix, terraform.workspace)}-demo-backend-${count.index}"
+#   }
+# }
