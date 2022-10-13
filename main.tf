@@ -40,7 +40,7 @@ resource "aws_subnet" "private" {
   availability_zone = element("${lookup(local.azs, terraform.workspace)}",count.index)
 
   tags = {
-    Name = "${lookup(local.resource_prefix, terraform.workspace)}-demo-private-${count.index}"
+    Name = "${lookup(local.resource_prefix, terraform.workspace)}-${lookup(local.env, terraform.workspace)}-demo-private-${count.index}"
   }
 }
 
@@ -50,13 +50,10 @@ resource "aws_subnet" "public" {
   cidr_block = element("${lookup(local.public_subnets, terraform.workspace)}",count.index)
   availability_zone = element("${lookup(local.azs, terraform.workspace)}",count.index)
   tags = {
-    Name = "${lookup(local.resource_prefix, terraform.workspace)}-demo-public-${count.index}"
+    Name = "${lookup(local.resource_prefix, terraform.workspace)}-${lookup(local.env, terraform.workspace)}-demo-public-${count.index}"
   }
 }
 
-output "test" {
-  value = aws_subnet.public
-}
 
 resource "aws_instance" "frontend" {
   count = "${lookup(local.frontend_instance_count, terraform.workspace)}"
@@ -65,7 +62,7 @@ resource "aws_instance" "frontend" {
   subnet_id = aws_subnet.public[count.index].id
 
   tags = {
-    Name = "${lookup(local.resource_prefix, terraform.workspace)}-demo-frontend-${count.index}"
+    Name = "${lookup(local.resource_prefix, terraform.workspace)}-${lookup(local.env, terraform.workspace)}-demo-frontend-${count.index}"
   }
 }
 resource "aws_instance" "backend" {
@@ -75,6 +72,6 @@ resource "aws_instance" "backend" {
   subnet_id = aws_subnet.public[count.index].id
 
   tags = {
-    Name = "${lookup(local.resource_prefix, terraform.workspace)}-demo-backend-${count.index}"
+    Name = "${lookup(local.resource_prefix, terraform.workspace)}-${lookup(local.env, terraform.workspace)}-demo-backend-${count.index}"
   }
 }
