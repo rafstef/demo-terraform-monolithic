@@ -69,7 +69,7 @@ resource "aws_instance" "backend" {
   count = "${lookup(local.backend_instance_count, terraform.workspace)}"
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
-  subnet_id = aws_subnet.public[count.index].id
+  subnet_id = aws_subnet.private[count.index].id
 
   tags = {
     Name = "${lookup(local.resource_prefix, terraform.workspace)}-${lookup(local.env, terraform.workspace)}-demo-backend-${count.index}"
